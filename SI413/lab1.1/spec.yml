@@ -1,0 +1,124 @@
+# SI413 Lab 1.1: Spec for Just Strings language
+
+your_name: Toren Hawk
+
+your_alpha: 262682
+
+used_ai: Y # remember to turn in an aichat.md file as well
+
+
+# Task 1
+
+language_name: hawkl
+
+
+# Task 2
+
+example_program: |
+    ---
+    This is an example program that takes one input, concatenates it with a string, 
+    reverses the order of characters, and prints the result to the screen 
+    ---
+    - a - marks an end line. Everything after on same line is a comment
+    - speak:; prints
+    - rev:; reverses the order
+    - __ gathers input
+    - characters between <> denote a string literal
+    - $ is an escape character
+    - & concatenates
+
+    speak: rev: <$<> & __ & <$>>;; - 
+
+
+example_input_1: |
+    hello world!
+
+example_output_1: |
+    >!!dlrow olleh<
+
+example_input_2: |
+    wild wild west
+
+example_output_2: |
+    >tsew dliw dliw<
+
+
+# Task 3
+
+language_syntax: |
+    
+    Ordinary Characters
+    An ordinary character is any single character other than newline, left angled 
+    bracket <, right angled bracket >, a $, a &, a _, a triple dash ---, or a dash -.
+
+    String Literals
+    A string literal is a left angled bracket <, followed by
+    a sequence of ordinary characters and escape sequences, followed by
+    a right bracket character >.
+
+    Escape Sequence
+    An escape sequence is a dollar sign $ immediately followed by any single
+    character.
+
+    End of Code Line
+    A dash - indicates the end of code for a line in the program.
+
+    Comment Block
+    Three dashes --- marks the begining of a comment block and a second three dashes
+    --- marks the endof the comment block
+ 
+    Concatenation
+    An ampersand & indicates the concatenation of a string.
+
+    Printing
+    The phrase speak:; will print whatever is between the colon and semi-colon.
+
+    Reversing
+    The phrase rev:; will reverse the string between the colon and semi-colon.
+
+    Taking Input
+    Two underscores __ indicate a request for input. 
+
+
+language_semantics: |
+
+    Left and Right Angle Bracket <>
+    Produces a string literal value
+
+    Dash - 
+    Produces no value. Any text after a dash - yet still on the same line will be 
+    interpreted as a comment. This comment only lasts until the end of the line. 
+
+    Triple dash ---
+    Produces no value. Starts a comment block. Comment blocks made with two triple 
+    dashes (--- example  ---)  can span multiple lines.
+
+    Underscores __
+    Produces a value printed to the consule if any any string literal is in between 
+    two underscores (ex. _<hello>_) and signals program to waitfor input afterwards.
+
+    Colon semi-colon operations :;
+    Produces the string literal or a modified form of the string literal between the two.
+    Any operations of the same kind evaluate from left to right. Operations within a :; duo
+    will be evaluated first before whatever is outside the :; (ex. second:first;).
+
+    A dollar sign must be inside a string literal and must be immediately followed by the 
+    character it is escaping. It must not be followed by a space otherwise it will simply be
+    interpreted as the character $ in a string.
+
+# Task 4
+
+reviewer_for: Toren Hawk
+
+reviewed_by: Thomas Burkhardt
+
+review_passed: N
+
+reviewer_comments: <
+   Looks like you include a good bit of semantics in the comments of the code. I do not know if this is a big deal but seems sort of odd.
+
+   Your dollar sign definition in semantics is more like syntax. Tell me what it does in semantics, syntax is used to describe how to employ it. 
+
+   Go into greater detail of where and when I can use __
+
+   Maybe clarify theb part of your code where you write "<>". Does this repersent a string literal with nothing in it?
