@@ -40,7 +40,7 @@ example_output_1: |
     String!
     Woah
     This stack stuff is... not chill.
-    IT IS weird/crazy brah
+    IT IS weird/crazzy brah
 
 example_input_2: |
     Radicallll
@@ -51,7 +51,7 @@ example_output_2: |
     String!
     Radicallll
     This stack stuff is... totally gnarly
-    IT IS weird/grom ~it''s surfer slang fyi~
+    IT IS weird/grom ~it's surfer slang fyi~
 
 
 language_syntax: |
