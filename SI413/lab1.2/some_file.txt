@@ -1,4 +1,9 @@
 
 
-~ print case
-    /String!/ p
+~ print case & input case
+    /Str\/ing! / p ~comment~ /String2\n/p i p
+
+~ concatenation case
+    /1 + / /2 + / i ssss p
+
+~ reverse case
