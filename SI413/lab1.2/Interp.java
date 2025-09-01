@@ -26,17 +26,28 @@ public class Interp {
             // String literal case
             if (got == '/') stack.push(this.stringFinder(src)); 
 
-            // Print case
-            else if (got == 'p') this.stackPrint();
-
             // Comment case
             else if (got == '~') this.commentHandler(src);
+
+            // Print case
+            else if (got == 'p') this.stackPrint();
 
             // Input case
             else if (got == 'i') stack.push(stdin.nextLine());
 
             // Concatenation case
-            else if (got == 's' && src.read() == 's') this.concat();
+            else if (got == 's' )
+                if (src.read() == 's') this.concat();
+                else System.exit(7);
+
+            // Reverse case
+            else if (got == 'r') this.stringRev();
+
+            // White space case
+            else if (got == ' ' || got == '\t' || got == '\n') continue;
+
+            // error case
+            else System.exit(7);
 
         }
         src.close();
@@ -59,11 +70,20 @@ public class Interp {
             else if (inner == '\\') {
                 inner = (char)src.read();
                 if (inner == 'n') inner = '\n';
+                else if (inner == 't') inner = '\t';
             }
             // Normal character case
             sb.append(inner);
         }
         return sb.toString();
+    }
+
+    /*
+     * Handle comment case
+     */
+    private void commentHandler(Reader src) throws IOException {
+        for (int inRaw = src.read(); inRaw != -1 ; inRaw = src.read())
+            if ((char)inRaw == '~' || (char)inRaw == '\n') return;
     }
     
     /*
@@ -71,14 +91,6 @@ public class Interp {
      */
     public void stackPrint() {
         if (!stack.isEmpty()) System.out.format("%s\n", stack.remove());
-    }
-
-    /*
-     * Handle comment case
-     */
-    private void commentHandler(Reader src) throws IOException {
-        for (int inRaw = src.read(); inRaw != -1 ; inRaw = src.read()) 
-            if ((char)inRaw == '~' || (char)inRaw == '\n') return;
     }
 
     /*
@@ -90,11 +102,22 @@ public class Interp {
             String s2 = stack.remove();
             String ss = s2 + s1;
             stack.push(ss);
-        }
+        } else System.exit(7);
+    }
+
+    /*
+     * Handles reverse case
+     */
+    public void stringRev() {
+        if (!stack.isEmpty()) {
+            StringBuilder rev = new StringBuilder();
+            rev.append(stack.remove());
+            stack.push(rev.reverse().toString());
+        } else System.exit(7);
     }
 
     public static void main(String[] args) throws IOException {
-        String fname = "some_file.txt";
+        String fname = "blew_test.txt";
         Interp interpreter = new Interp();
         interpreter.parseFile(fname);
     }

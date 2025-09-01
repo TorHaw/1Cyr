@@ -1,9 +1,11 @@
-
+~ funky case
+    // p
 
 ~ print case & input case
-    /Str\/ing! / p ~comment~ /String2\n/p i p
+    /Print: / p /Str\/ing! / p ~comment~ /String2/p /Input: / pip
 
 ~ concatenation case
-    /1 + / /2 + / i ssss p
+    /Concat: / p /1 + / /2 + / i ssss p
 
-~ reverse case
+~ reversal case, escape character, and inline comment case
+    /Rev: \n/ /IT IS //\/driew/r i r ~inline comment~ ss ss ss p 
