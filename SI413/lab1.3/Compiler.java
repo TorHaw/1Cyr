@@ -1,23 +1,29 @@
 import java.io.*;
 import java.util.*;
 
-public class Interp {
-    
+public class Compiler {
+    // declare print stack and epilogue list
     private static ArrayDeque<String> stack;
+    private static ArrayList<String> elist;
+    private static int sCount = 0;
+    private static PrintWriter pw;
 
     /*
      * Constructor
      */
-    public Interp() {
+    public Compiler() {
         stack = new ArrayDeque<String>();
     }
 
     /*
      * File processing
      */
-    public ArrayDeque<String> parseFile(String fname) throws IOException {
-        Reader src = new FileReader(fname);
+    public ArrayDeque<String> compile(String f1, String f2) throws IOException {
+        Reader src = new FileReader(f1);
         Scanner stdin = new Scanner(System.in);
+        FileWriter fw = new FileWriter(f2, false);
+        pw = new PrintWriter(fw);
+        this.init();
 
         // note, -1 is returned at EOF
         for (int gotRaw = src.read(); gotRaw != -1; gotRaw = src.read()) {
@@ -31,18 +37,18 @@ public class Interp {
 
             // Print case
             else if (got == 'p') this.stackPrint();
-
+                
             // Input case
-            else if (got == 'i') stack.push(stdin.nextLine());
-
+            else if (got == 'i') //stack.push(stdin.nextLine());
+                throw new UnsupportedOperationException("this doesn't work yet");
             // Concatenation case
-            else if (got == 's' )
-                if (src.read() == 's') this.concat();
-                else System.exit(7);
+            else if (got == 's' ) throw new UnsupportedOperationException("this doesn't work yet");
+                //if (src.read() == 's') this.concat();
+                //else System.exit(7);
 
             // Reverse case
-            else if (got == 'r') this.stringRev();
-
+            else if (got == 'r') //this.stringRev();
+                throw new UnsupportedOperationException("this doesn't work yet");
             // White space case
             else if (got == ' ' || got == '\t' || got == '\n') continue;
 
@@ -50,9 +56,23 @@ public class Interp {
             else System.exit(7);
 
         }
+        this.close();
         src.close();
         stdin.close();
         return stack;
+    }
+
+    private void init() {
+        pw.println("target triple = \"x86_64-pc-linux-gnu\"\n");
+        pw.println("declare i32 @puts(ptr noundef) #1");
+        pw.println();
+        pw.println("define i32 @main() { ");
+    }
+
+    private void close() {
+        pw.println("\tret i32 0");
+        pw.println("}");
+        pw.close();
     }
 
     /*
@@ -89,14 +109,17 @@ public class Interp {
     /*
      * Handles print case
      */
-    public void stackPrint() {
-        if (!stack.isEmpty()) System.out.format("%s\n", stack.remove());
+    private void stackPrint() {
+        if (!stack.isEmpty()) {
+            elist.add("@lit"++ " = constant ["+ +" x i8] c\"" +stack.remove() + "\00");
+            lcount++;
+        }
     }
 
     /*
      * Handles concatenation case
      */
-    public void concat() {
+    private void concat() {
         if (!stack.isEmpty()) {
             String s1 = stack.remove();
             String s2 = stack.remove();
@@ -108,7 +131,7 @@ public class Interp {
     /*
      * Handles reverse case
      */
-    public void stringRev() {
+    private void stringRev() {
         if (!stack.isEmpty()) {
             StringBuilder rev = new StringBuilder();
             rev.append(stack.remove());
@@ -117,8 +140,9 @@ public class Interp {
     }
 
     public static void main(String[] args) throws IOException {
-        String fname = args[0];
-        Interp interpreter = new Interp();
-        interpreter.parseFile(fname);
+        String f1 = args[0];
+        String f2 = args[1];
+        Compiler comp = new Compiler();
+        comp.compile(f1, f2);
     }
 }

@@ -1,0 +1,70 @@
+# SI413 Lab 1.2: Interpreter for Just Strings language
+
+your_name: Toren Hawk
+
+your_alpha: 262682
+
+used_ai: Y # remember to turn in an aichat.md file as well
+
+# leave this as NONE for your initial submission
+changes_on_resubmit: |
+    Accidentally spelled .yml as .yaml, so fixed that.
+    Made my main program take an argument for a file not hardcoded file.
+
+
+# Task 1
+
+language_name: rds
+
+
+# Task 2
+
+example_program: |
+    ~ Example program by Toren Hawk
+
+    ~ print case
+    /String!/ p
+
+    ~ input case
+    i p
+
+    ~ concatenate, print, and input case
+    /This stack stuff is.../ i ss p 
+
+    ~ reversal case, escape character, and inline comment case
+    /IT IS //\/driew/r i ~inline comment~ ss ss p 
+
+
+example_input_1: |
+    Woah
+    not chill.
+    crazzy brah
+
+example_output_1: |
+    String!
+    Woah
+    This stack stuff is... not chill.
+    IT IS weird/crazzy brah
+
+example_input_2: |
+    Radicallll
+    totally gnarly
+    grom ~it's surfer slang fyi~
+
+example_output_2: |
+    String!
+    Radicallll
+    This stack stuff is... totally gnarly
+    IT IS weird/grom ~it's surfer slang fyi~
+
+
+# Task 4
+
+reviewer_for: Toren Hawk
+
+reviewed_by: Thomas Burkhardt
+
+review_passed: Y
+
+reviewer_comments: <
+    Looks good!
