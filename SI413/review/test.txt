@@ -1,0 +1,9 @@
+shhh this is an example program
+
+HEAR_YE(~ this language is not that bad\n ~)
+
+mango
+
+HEAR_YE(~ can it do ~ UNIFY ~ ~ UNIFY ~ REVERTERE(GIVE_ME) ~)
+
+HEAR_YE(~CHICKEN i think it ~ UNIFY ~ ~ UNIFY ~ REVERTERE(GIVE_ME) ~CHICEKN)

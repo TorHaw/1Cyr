@@ -1,4 +1,22 @@
 ~Test 1: Empty file~
 
 ~Test 2: print aloha
-/aloha/ p
+/aloha/ p /\tALOHA/ p /\nAlOhA/p
+
+~Test 3: input
+/Test 3:/ p i p i p
+
+~Test 4: concatenate strings   
+/Hello, / /world!/ ss p
+
+~Test 5: concatenate inputs   
+i i i ss ss p
+
+~ Test 6: reverse case
+/tah/ /looc/  ss r p
+
+~ Test 7: string and input 
+/input: / i ss p
+
+~ Test 8: string and input 
+/input: / /)ver(/ r ss p

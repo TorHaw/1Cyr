@@ -1,0 +1,165 @@
+# SI413 Lab 2.1: Spec for StringBoolVar Language
+
+your_name: Toren Hawk
+
+your_alpha: 262682
+
+used_ai: N # remember to turn in an aichat.md file as well
+
+# describe any collaboration or help you got from classmates
+collaboration: |
+    NONE
+
+# leave this as NONE for your initial submission
+changes_on_resubmit: |
+    NONE
+
+#### TASK 1 ####
+
+language_name: codeSurfer
+
+
+#### TASK 2 ####
+
+example_program: |
+    \ Example program by Toren Hawk \
+
+    \ Print a string literal \
+    ~This language is totally radical~ brah
+
+    \ Input a string and print it \
+    ~Exciting~ brah dawnPatrol brah
+
+    \ Concatenate two string literals and print the result \
+    ~The waves are~ ~gnarly today~ ~crazy~ partyWave partyWave brah
+
+    \ Reverse a string literal and print it \
+    ~Check out this sick move!~ cutback brah
+
+    \ Demonstration of escape character and inline comment \
+    ~I love surfing waves that look like '_~'~ brah
+
+    \ Boolean literals goofy=false and regular=true and nah=not \
+    regular nah brah
+
+    \ Boolean AND operation and or operation lineup=and A-frame=or \
+    goofy regular regular lineup A-frame brah
+
+    \ String less than operation and greater than operation kook=less than kahuna=greater than \
+    (~bomb~ ~swell~ kook) (~gnarly~ ~break~ kahuna) A-frame brah
+
+    \ String contains \
+    ~surfboard~ ~surf~ impactZone brah
+
+    \ String variable assignment and usage \
+    ~totally sketchy man~ quiver x
+    ~not chill.~ quiver x
+    x brah
+
+    \ Boolean variable assignment and usage \
+    goofy leash y 
+    y brah
+
+example_input_1: |
+    noice
+
+example_output_1: |
+    This language is totally radical
+    Exciting
+    noice
+    The waves aregnarly todaycrazy partyWave partyWave brah
+    !evom kcis siht tuo kcehC
+    I love surfing waves that look like '~'
+    goofy
+    regular
+    regular
+    ~bomb~ ~swell~ ~gnarly~ ~break~ kook kahuna kook brah
+    regular
+    not chill.
+    goofy 
+
+example_input_2: |
+    Bruh
+
+example_output_2: |
+    This language is totally radical
+    Exciting
+    Bruh
+    The waves aregnarly todaycrazy partyWave partyWave brah
+    !evom kcis siht tuo kcehC
+    I love surfing waves that look like '~'
+    goofy
+    regular
+    regular
+    ~bomb~ ~swell~ ~gnarly~ ~break~ kook kahuna kook brah
+    regular
+    not chill.
+    goofy 
+
+
+#### TASK 3 ####
+
+# there are just two example tokens below; you should remove or modify them!!
+tokens: |
+    Token name    Regex
+    ----------    -----
+    BOOL           goofy|regular
+    STRING         ~([^~]|*~)*~
+    VAR            [a-zA-Z_][a-zA-Z0-9_]*
+    ASSIGNSTR      quiver
+    ASSIGNBOOL     leash
+    PRINT          brah
+    INPUT          dawnPatrol
+    CONCAT         partyWave
+    REVERSE        cutback
+    ESCAPE         _
+    NOT            nah
+    AND            lineup
+    OR             A-frame
+    LESS           kook
+    GREATER        kahuna
+    CONTAINS       impactZone
+    COMMENT        \[^\]*\
+    --             [ \t\n]
+
+
+#### TASK 4 ####
+
+# remove or replace the example production rule with your own!
+grammar: |
+    program -> statement program
+    statement -> value expression PRINT
+              | value expression ASSIGNSTR VAR
+              | value expression ASSIGNBOOL VAR
+              | value PRINT
+    expression -> REVERSE
+              | NOT
+              | value CONCAT
+              | value GREATER
+              | value LESS
+              | value CONTAINS
+              | value AND
+    value -> STRING          
+              | INPUT
+              | VAR
+              | BOOL
+
+
+#### TASK 5 ####
+
+semantics: |
+    BLAH BLAH
+    BLAH BLAH
+
+
+#### TASK 6 ####
+
+reviewer_for: Matt Irving
+
+reviewed_by: Matt Irving
+
+review_passed: N
+
+reviewer_comments: |
+    Language idea seems quite radical. I like the surfer theme. Still needs quite a bit of work to finish off the parts, but this is
+    is definitely a good start. Keep it up!

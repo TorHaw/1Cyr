@@ -10,8 +10,9 @@ language_name: rds
 
 # describe any collaboration or help you got from classmates
 collaboration: |
-    NONE
+    Talked broadly to Drew Schipper about the importance of using a stack to keep track of registers. Originally,
+    I was trying to use just counts but it became increasingly difficult to manage. 
 
 # leave this as NONE for your initial submission
 changes_on_resubmit: |
-    NONE
+    Dramatically increased functionality. Originally only had printing working. Now program should be completely functional. 

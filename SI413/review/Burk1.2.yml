@@ -1,0 +1,68 @@
+# SI413 Lab 1.2: Interpreter for Just Strings language
+
+your_name: Thomas Burkhardt
+
+your_alpha: 260786
+
+used_ai: Y # remember to turn in an aichat.md file as well
+
+# leave this as NONE for your initial submission
+changes_on_resubmit: |
+    NONE
+
+
+# Task 1
+
+language_name: DRAMAQUEEN
+
+
+# Task 2
+
+example_program: |
+    HEAR_YE(~ this language is not that bad ~)
+    
+    HEAR_YE(~ can it do ~ UNIFY ~ ~ UNIFY ~ REVERTERE(GIVE_ME) ~)
+
+    HEAR_YE(~CHICKEN i think it ~ UNIFY ~ ~ UNIFY ~ REVERTERE(GIVE_ME) ~CHICEKN)
+
+
+example_input_1: |
+    This?
+
+    Can!
+
+example_output_1: |
+   this language is not bad
+
+   can it do ?sihT
+
+   i think it !naC
+
+example_input_2: |
+    !naC
+    
+    ?sihT
+
+
+example_output_2: |
+  this language is not bad
+
+   can it do Can!
+
+   i think it This?
+
+
+
+# Task 4
+
+reviewer_for: Thomas Burkhardt
+
+reviewed_by: Toren Hawk
+
+review_passed: N
+
+reviewer_comments: <
+     Modify the file so that it takes a command line argument for the input file name. 
+
+     Interpreter does not identifie an error in the input program, and does not call System.exit(7)
+     to indicate that your interpreter correctly identified the error and didn’t just crash.
