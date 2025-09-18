@@ -73,7 +73,6 @@ example_output_1: |
     goofy
     regular
     regular
-    ~bomb~ ~swell~ ~gnarly~ ~break~ kook kahuna kook brah
     regular
     not chill.
     goofy 
@@ -91,7 +90,6 @@ example_output_2: |
     goofy
     regular
     regular
-    ~bomb~ ~swell~ ~gnarly~ ~break~ kook kahuna kook brah
     regular
     not chill.
     goofy 
@@ -139,6 +137,7 @@ grammar: |
               | value LESS
               | value CONTAINS
               | value AND
+              | value OR
     value -> STRING          
               | INPUT
               | VAR
@@ -148,9 +147,35 @@ grammar: |
 #### TASK 5 ####
 
 semantics: |
-    BLAH BLAH
-    BLAH BLAH
+    Print takes an expression and prints it to the terminal
 
+    Within a string literal, ordinary characters are interpreted as
+    themselves, and escape sequences are interpreted as the character
+    after the underscore.
+
+    Concatenate takes two string expressions and combines them in left-to-right
+    order.
+
+    Reversal takes an expression, reverses it, and
+    then returns the reversed string.
+
+    Input reads a line of text from the terminal and returns it.
+
+    Assign string takes a String expression to the left and assigns it to a variable
+    name listed to the right.
+
+    Assign bool takes a boolean expression to the left and assigns it to a variable
+    name listed to the right.
+
+    contains string takes two string expressions and compares them by checking if the second string
+    expression exists in the first (when reading left to right).
+
+    Less and greater takes two string expressions to the left and compares them left to right.
+
+    Not takes a single boolean expression to the left and return the opposite of it. 
+
+    And and Or takes two boolean expressions to the left and returns the assosciated boolean 
+    expression from an And or Or statement on the two values.
 
 #### TASK 6 ####
 

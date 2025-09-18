@@ -1,0 +1,27 @@
+@ Simple print
+    p [welcome]
+
+    @ Simple boolean ops
+    a~0
+    b~1
+    p [booleans]
+    p a&b
+    p a|b
+
+    @ Simple string ops
+    str~[bye]
+    strb~[hello]
+    p [strings]
+    p str<strb
+    p str?strb
+    p [ello]?strb
+
+    @ Variable reassign and concat
+    str~[this is ]+i
+    p [$[hi$] ]+str+r~[.!]~
+
+    @ Nested statements
+    p r~r~r~strb~~~
+
+    p i<i&b
+    p r~[dne ]+i+r~[cba ]~~
