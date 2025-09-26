@@ -9,3 +9,6 @@
 
 ~ reversal case, escape character, and inline comment case
     /Rev: \n/ /IT IS //\/driew/r i r ~inline comment~ ss ss ss p 
+
+~ confusion case
+    i i ss /1+/ /2/ ss ss p

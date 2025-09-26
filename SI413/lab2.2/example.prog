@@ -25,3 +25,15 @@
 
     p i<i&b
     p r~[dne ]+i+r~[cba ]~~
+
+    @ updates to this lang by roche
+    @ prints stop
+    p r~[pots]~
+    @ prints 0
+    p [a]>[b]
+    @ prints 1
+    p [aaaaaa]<[b]
+    @ prints 0
+    p r~1~
+    @ prints 1
+    p r~[heart]>[soul]~

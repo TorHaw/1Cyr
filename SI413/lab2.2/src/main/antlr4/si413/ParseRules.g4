@@ -1,22 +1,22 @@
 parser grammar ParseRules;
-// grammar for basic calculator language
 
-tokens {PRINT, SAVE, X, LP, RP, ADDOP, MULOP, INT}
+tokens {TILDE, OP, BOOL, PRINT, INPUT, REV, LIT, ID}
 
 prog
-  : stmt prog #RegularProg
+  : stmt program #RegularProg
   | EOF #EmptyProg
   ;
 
 stmt
-  : PRINT LP expr RP #PrintStmt
-  | SAVE LP expr RP #SaveStmt
+  : PRINT expr #PrintStmt
+  | ID TILDE expr #SaveStmt
   ;
 
 expr
-  : INT #LiteralExpr
-  | X #VarExpr
-  | ADDOP expr #SignExpr
-  | expr MULOP expr #MulExpr
-  | expr ADDOP expr #AddExpr
+  : LIT #LiteralExpr
+  | BOOL #BoolExpr
+  | expr OP expr #EvalExpr
+  | INPUT #InputExpr
+  | REV TILDE expr TILDE #RevExpr
+  | ID #VarExpr
   ;

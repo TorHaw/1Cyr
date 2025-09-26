@@ -1,11 +1,10 @@
-# tokens for basic calculator language
-PRINT: print
-SAVE: save
-X: x
-LP: \(
-RP: \)
-ADDOP: [-+]
-MULOP: [*/]
-INT: [0-9]+
-ignore: #.*
-ignore: [ \t\n]
+TILDE:        ~
+OP:           <|>|\?|\+|&|\|
+BOOL:         0|1
+PRINT:        p\s
+INPUT:        i
+REV:          r
+LIT:          \[([^\[\]\$]|\$\[|\$\]|\$\$)*\]
+ID:           [a-z]+
+ignore:       @.*
+ignore:       [\n]

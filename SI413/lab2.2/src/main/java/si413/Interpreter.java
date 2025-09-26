@@ -2,6 +2,9 @@ package si413;
 
 import java.nio.file.Path;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -13,6 +16,8 @@ import org.antlr.v4.runtime.TokenStream;
  * and src/main/antlr4/si413/ParseRules.g4 respectively.
  */
 public class Interpreter {
+
+    Map<String, String> vars = new HashMap<String, Object>();
 
     /** Methods in this class will execute statements.
      * Return type is Void because statements do not return anything.
@@ -29,61 +34,83 @@ public class Interpreter {
 
         @Override
         public Void visitPrintStmt(ParseRules.PrintStmtContext ctx) {
-            int value = evisitor.visit(ctx.expr());
-            System.out.println(value);
+            Object value = evisitor.visit(ctx.expr());
+            if (value instanceof String)
+                System.out.println((String)value);
+            else if (value instanceof Boolean)
+                System.out.println((Boolean)value);
             return null;
         }
 
         @Override
         public Void visitSaveStmt(ParseRules.SaveStmtContext ctx) {
-            savedValue = evisitor.visit(ctx.expr());
+            String varName = ctx.ID().getText();
+            Object value = evisitor.visit(ctx.expr());
+            vars.put(varName, value);
             return null;
         }
     }
 
     /** Methods in this class will execute expressions and return the result.
      */
-    private class ExpressionVisitor extends ParseRulesBaseVisitor<Integer> {
+    private class ExpressionVisitor extends ParseRulesBaseVisitor<Object> {
         @Override
-        public Integer visitLiteralExpr(ParseRules.LiteralExprContext ctx) {
-            return Integer.valueOf(ctx.INT().getText());
+        public String visitLiteralExpr(ParseRules.LiteralExprContext ctx) {
+            return ctx.LIT().getText();
         }
 
         @Override
-        public Integer visitVarExpr(ParseRules.VarExprContext ctx) {
+        public Boolean visitBoolExpr(ParseRules.BoolExprContext ctx) {
+            return visit(ctx.expr()) == 1;
+        }
+
+        @Override
+        public String visitInputExpr(ParseRules.InputExprContext ctx) {
+            return ctx.INPUT().getText();
+        }
+
+        @Override
+        public Object visitVarExpr(ParseRules.VarExprContext ctx) {
+            String varName = ctx.ID().getText();
+            Object savedValue = vars.get(varName);
             if (savedValue == null)
-                return Errors.error("x is referenced before being saved");
-            else return savedValue;
+                return Errors.error(varName+" is referenced before being saved");
+            return savedValue;
         }
 
         @Override
-        public Integer visitSignExpr(ParseRules.SignExprContext ctx) {
-            int rhs = visit(ctx.expr());
-            if (ctx.ADDOP().getText().equals("-")) return -rhs;
-            else return rhs;
+        public Object visitEvalExpr(ParseRules.EvalExprContext ctx) {
+            Object lhs = visit(ctx.expr(0));
+            Object rhs = visit(ctx.expr(1));
+            if (lhs instanceof String && rhs instanceof String) {
+                lhs = (String) lhs;
+                rhs = (String)rhs;
+                if (ctx.OP().getText().equals("<")) return lhs.compareTo(rhs) < 0;
+                else if (ctx.OP().getText().equals(">")) return llhs.compareTo(rhs) >= 0;
+                else if (ctx.OP().getText().equals("?")) return rhs.contains(lhs);
+                else if (ctx.OP().getText().equals("+")) return (String)rhs + (String)lhs;
+                else return Errors.error("Undefined operation for given types");
+
+            } else if (lhs instanceof Boolean && rhs instanceof Boolean) {         
+                if (ctx.OP().getText().equals("&")) return (Boolean)rhs && (Boolean)lhs;
+                else if (ctx.OP().getText().equals("|")) return (Boolean)rhs || (Boolean)lhs;
+                else return Errors.error("Undefined operation for given types");
+
+            } else
+                return Errors.error("Mismatch types in operation");
         }
 
         @Override
-        public Integer visitMulExpr(ParseRules.MulExprContext ctx) {
-            int lhs = visit(ctx.expr(0));
-            int rhs = visit(ctx.expr(1));
-            if (ctx.MULOP().getText().equals("*")) return lhs * rhs;
-            else {
-                if (rhs == 0) return Errors.error("divide by zero");
-                else return lhs / rhs;
-            }
-        }
-
-        @Override
-        public Integer visitAddExpr(ParseRules.AddExprContext ctx) {
-            int lhs = visit(ctx.expr(0));
-            int rhs = visit(ctx.expr(1));
-            if (ctx.ADDOP().getText().equals("+")) return lhs + rhs;
-            else return lhs - rhs;
+        public Integer visitRevExpr(ParseRules.RevExprContext ctx) {
+            Object str = visit(ctx.expr());
+            
+            if (str instanceof String) {
+                StringBuilder sb = new StringBuilder(str);
+                return sb.reverse().toString();
+            } else return Errors.error("Undefined operation for given type");
         }
     }
 
-    private Integer savedValue = null;
     private Scanner stdin = new Scanner(System.in);
     private StatementVisitor svisitor = new StatementVisitor();
     private ExpressionVisitor evisitor = new ExpressionVisitor();
