@@ -8,7 +8,7 @@ used_ai: Y # remember to turn in an aichat.md file as well
 
 # leave this as NONE for your initial submission
 changes_on_resubmit: |
-    NONE
+    Finished interpreter.
 
 language_name: Truffle
 

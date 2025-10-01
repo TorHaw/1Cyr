@@ -5,6 +5,8 @@
     a~0
     b~1
     p [booleans]
+    p [a: ]+a
+    p [b: ]+b
     p a&b
     p a|b
 

@@ -17,7 +17,7 @@ import org.antlr.v4.runtime.TokenStream;
  */
 public class Interpreter {
 
-    Map<String, String> vars = new HashMap<String, Object>();
+    Map<String, Object> vars = new HashMap<String, Object>();
 
     /** Methods in this class will execute statements.
      * Return type is Void because statements do not return anything.
@@ -38,7 +38,7 @@ public class Interpreter {
             if (value instanceof String)
                 System.out.println((String)value);
             else if (value instanceof Boolean)
-                System.out.println((Boolean)value);
+                System.out.println(((Boolean)value)? "1" : "0");
             return null;
         }
 
@@ -54,19 +54,34 @@ public class Interpreter {
     /** Methods in this class will execute expressions and return the result.
      */
     private class ExpressionVisitor extends ParseRulesBaseVisitor<Object> {
+
         @Override
         public String visitLiteralExpr(ParseRules.LiteralExprContext ctx) {
-            return ctx.LIT().getText();
+            String lit = ctx.LIT().getText().substring(1, ctx.LIT().getText().length()-1);
+            Pattern p = Pattern.compile("\\$\\[|\\$\\]|\\$\\$|\\$\\n|\\$\\t|\\$\\r");
+            Matcher m = p.matcher(lit);
+            StringBuffer sb = new StringBuffer();
+            while (m.find()) {
+                String r = m.group();
+                if (r.equals("$$")) m.appendReplacement(sb, "\\$");
+                else if (r.equals("$[")) m.appendReplacement(sb, "\\[");
+                else if (r.equals("$]")) m.appendReplacement(sb, "\\]");
+                else if (r.equals("$\n")) m.appendReplacement(sb, "\n");
+                else if (r.equals("$\t")) m.appendReplacement(sb, "\t");
+                else if (r.equals("$\r")) m.appendReplacement(sb, "\r");
+            }
+            m.appendTail(sb);
+            return sb.toString();
         }
 
         @Override
         public Boolean visitBoolExpr(ParseRules.BoolExprContext ctx) {
-            return visit(ctx.expr()) == 1;
+            return ctx.BOOL().getText().equals("1");
         }
 
         @Override
         public String visitInputExpr(ParseRules.InputExprContext ctx) {
-            return ctx.INPUT().getText();
+            return stdin.nextLine();
         }
 
         @Override
@@ -83,30 +98,46 @@ public class Interpreter {
             Object lhs = visit(ctx.expr(0));
             Object rhs = visit(ctx.expr(1));
             if (lhs instanceof String && rhs instanceof String) {
-                lhs = (String) lhs;
-                rhs = (String)rhs;
-                if (ctx.OP().getText().equals("<")) return lhs.compareTo(rhs) < 0;
-                else if (ctx.OP().getText().equals(">")) return llhs.compareTo(rhs) >= 0;
-                else if (ctx.OP().getText().equals("?")) return rhs.contains(lhs);
-                else if (ctx.OP().getText().equals("+")) return (String)rhs + (String)lhs;
-                else return Errors.error("Undefined operation for given types");
+                String l = (String)lhs;
+                String r = (String)rhs;
+                if (ctx.OP().getText().equals("<")) return l.compareTo(r) < 0;
+                else if (ctx.OP().getText().equals(">")) return l.compareTo(r) >= 0;
+                else if (ctx.OP().getText().equals("?")) return (r).contains(l);
+                else if (ctx.OP().getText().equals("+")) return l + r;
+                else return Errors.error("Undefined operation for given types 1");
 
-            } else if (lhs instanceof Boolean && rhs instanceof Boolean) {         
-                if (ctx.OP().getText().equals("&")) return (Boolean)rhs && (Boolean)lhs;
-                else if (ctx.OP().getText().equals("|")) return (Boolean)rhs || (Boolean)lhs;
-                else return Errors.error("Undefined operation for given types");
+            } else if (lhs instanceof Boolean && rhs instanceof String) {  
+                Boolean l = (Boolean)lhs;
+                String r = (String)rhs;
+                if (ctx.OP().getText().equals("+")) return ((l)?"1":"0") + r;
+                else return Errors.error("Undefined operation for given types 2");
+
+            } else if (lhs instanceof String && rhs instanceof Boolean) {  
+                String l = (String)lhs;
+                Boolean r = (Boolean)rhs;
+                if (ctx.OP().getText().equals("+")) return l + ((r)?"1":"0");
+                else return Errors.error("Undefined operation for given types 3");
+
+            } else if (lhs instanceof Boolean && rhs instanceof Boolean) {  
+                Boolean l = (Boolean)lhs;
+                Boolean r = (Boolean)rhs;       
+                if (ctx.OP().getText().equals("&")) return (l && r);
+                else if (ctx.OP().getText().equals("|")) return (l || r);
+                else return Errors.error("Undefined operation for given types 4");
 
             } else
                 return Errors.error("Mismatch types in operation");
         }
 
         @Override
-        public Integer visitRevExpr(ParseRules.RevExprContext ctx) {
+        public Object visitRevExpr(ParseRules.RevExprContext ctx) {
             Object str = visit(ctx.expr());
             
             if (str instanceof String) {
-                StringBuilder sb = new StringBuilder(str);
+                StringBuilder sb = new StringBuilder((String)str);
                 return sb.reverse().toString();
+            } else if (str instanceof Boolean) {
+                return !(Boolean)str;
             } else return Errors.error("Undefined operation for given type");
         }
     }

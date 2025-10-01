@@ -3,7 +3,7 @@ parser grammar ParseRules;
 tokens {TILDE, OP, BOOL, PRINT, INPUT, REV, LIT, ID}
 
 prog
-  : stmt program #RegularProg
+  : stmt prog #RegularProg
   | EOF #EmptyProg
   ;
 
