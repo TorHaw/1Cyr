@@ -3,12 +3,12 @@ import java.util.*;
 
 public class Compiler {
     // declare print stack and epilogue list
-    private static ArrayList<String> elist;
-    private static ArrayDeque<String> stack;
-    private static int sCount = 1;
-    private static int rCount = 0;
-    private static int pCount = 0;
-    private static int oCount = 0;
+    private static ArrayList<String> elist; // epilogue list
+    private static ArrayDeque<String> stack; // print stack
+    private static int sCount = 1; // string count
+    private static int rCount = 0; // register count
+    private static int pCount = 0; // print format count
+    private static int oCount = 0; // other count
     private static PrintWriter pw;
 
     /*
@@ -172,7 +172,7 @@ public class Compiler {
         pw.println("declare ptr @malloc(i64)");
         pw.println("declare i64 @strlen(ptr noundef)");
         pw.println();
-        this.initFunctions();
+        //this.initFunctions();
         pw.println();
         pw.println("define i32 @main() { ");
         
