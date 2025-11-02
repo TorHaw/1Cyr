@@ -30,8 +30,7 @@ HIGH_PRIORITY = 1
 LOW_PRIORITY = 10
 MAX_SERVICE = 10
 
-schedulers = ["FCFS","HRRN"]
-# schedulers = ["RR","FCFS","HRRN","SJF","SRT","PRI"]  # add from here as you complete schedulers
+schedulers = ["RR","FCFS","HRRN","SJF","SRT","PRI"]  # add from here as you complete schedulers
 NUM_SCHEDULERS = len(schedulers)
 
 # file_jobs is a 2-D list (array). There is one copy of the list for each scheduler.
@@ -107,16 +106,19 @@ for scheduler in schedulers:
 		if scheduler == "RR":
 		
 			if (running_job == None):
-				# TODO: see if job queue is empty. If not, choose a job to run
-				pass
+				# see if job queue is empty. If not, choose a job to run
+				if job_queue != []:
+					running_job = job_queue.pop(0)
 			
 			# If there is a running job, pre-empt it if the quantum has been exceeded
 			elif (last_completion == clock_time - RR_QUANTUM): # Pre-emption
-				# TODO: 
 				# move running job to the back of the queue
 				# update last_completion time to reflect current clock time
 				# if the job queue is not empty, choose a job to run
-				pass
+				job_queue.append(running_job)
+				last_completion = clock_time
+				if job_queue != []:
+					running_job = job_queue.pop(0)
 				
 								
 		elif scheduler == "FCFS":
@@ -148,32 +150,75 @@ for scheduler in schedulers:
 		
 		elif scheduler == "SJF": # NOT pre-emptive
 			
-			# TODO: 
 			# If no running job, find shortest service time job in queue
 			#   and set it to run
-			pass
+			if running_job == None:
+				if job_queue != []:
+					shortest = MAX_SERVICE + 1
+					next_job = None
+					for job in job_queue:
+						if job.service < shortest:
+							shortest = job.service
+							next_job = job
+					job_queue.remove(next_job)
+					running_job = next_job
 						
 			
 		elif scheduler == "SRT": # pre-emptive
 		
-			# TODO: 
 			# Find shortest service time in queue
 			# If a job is running, compare with shortest from queue
 			# Pre-empt if needed (but not if a tie)	
 			# If no job is running, just pick best from queue
-			pass
+			
+			if job_queue != []:
+				shortest = MAX_SERVICE + 1
+				next_job = None
+				for job in job_queue:
+					if job.service < shortest:
+						shortest = job.service
+						next_job = job
+
+				if running_job != None:
+					if running_job.service > shortest:
+						job_queue.append(running_job)
+						running_job = next_job
+						job_queue.remove(next_job)
+
+				else:
+					running_job = next_job
+					job_queue.remove(next_job)
+
+
 													
 													
 		elif scheduler == "PRI": # pre-emptive
 		
-			# TODO: 
 			# If there's a running job, find its priority.
 			# If None, default to LOW_PRIORITY.	
 			# Find highest pri job in the queue (note: low number = high pri)
 			# If there's a running job, compare priority against best from queue
 			#     If the queue max pri job is higher, pre-empt the running job
 			# If no running job, just pick highest-pri job from the queue
-			pass
+			if job_queue != []:
+				highest = LOW_PRIORITY + 1
+				next_job = None
+				for job in job_queue:
+					if job.priority < highest:
+						highest = job.priority
+						next_job = job
+					
+				if running_job != None:
+					if running_job.priority > highest:
+						job_queue.append(running_job)
+						running_job = next_job
+						job_queue.remove(next_job)
+
+				else:
+					running_job = next_job
+					job_queue.remove(next_job)
+			
+
 
 		#######################################################################	
 		
