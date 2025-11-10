@@ -1,0 +1,31 @@
+p [\Testing pre-modification function\]
+p [\Hello$nEnter something! \]
+p [\Look at this! \ + r[i]]
+p [\$n\]
+
+p [\Testing variables\]
+bA~0
+p [bA]
+bA~1
+p [bA]
+sA~\test1\
+p [sA]
+sA~\test2\
+p [sA]
+
+t~ 1 [
+    p [\if block\]
+]
+
+t~ 0 [
+    p [\BAD\]
+]
+f~ [
+    p [\else block\]
+]
+
+stimer~\\
+w~r [\...\?stimer] [
+    p [\cha\]
+    stimer~stimer+\.\
+]

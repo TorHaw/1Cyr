@@ -1,16 +1,16 @@
 # SI413 Lab 3.2: Compiler for Iffy language
 
-your_name: BLAH BLAH
+your_name: Toren Hawk
 
-your_alpha: BLAH
+your_alpha: 262682
 
 used_ai: Y # remember to turn in an aichat.md file as well
 
-language_name: BLAH
+language_name: Truffelse
 
 # leave this as NONE for your initial submission
 changes_on_resubmit: |
-    NONE
+    Completed all functionality required for this part.
 
 # describe any collaboration or help you got from classmates
 collaboration: |
@@ -23,21 +23,67 @@ any_other_comments_for_me: |
 # feel free to copy these example programs and inputs/outputs
 # from the previous lab
 example_program: |
-    BLAH BLAH
-    BLAH BLAH
+    @ test bool assign, string assign, while loop, if else, 
+    @ rev bool, print, and, contains, concat, rev string, escape
+    p [\$\Example Program$\$n \]
+    bA~1
+    bB~1
+    sSecret~\apple\
+    w~bA&bB [
+        sC~i
+        t~sC?sSecret [ bA~r[bA] ]
+        f~ [ p [\Try again. Hint: \ + r [ sSecret ] ] ]
+    ]
+    p [\Escaped loop!\]
+
+    @ test others: compare, or, if
+    p [ \x\ > \y\]
+    p [ \x\ < \y\]
+    t~1|0 [ p [1]]
 
 example_input_1: |
-    BLAH BLAH
+    p
 
 example_output_1: |
-    BLAH BLAH
+    \Example Program\
+     
+    Escaped loop!
+    False
+    True
+    True
 
 example_input_2: |
-    BLAH BLAH
+    w
+    x
+    y
+    a
 
 example_output_2: |
-    BLAH BLAH
+    \Example Program\
+     
+    Try again. Hint: elppa
+    Try again. Hint: elppa
+    Try again. Hint: elppa
+    Escaped loop!
+    False
+    True
+    True
 
 dance_program: |
-    BLAH BLAH
-    BLAH BLAH
+    p [\enter two dance moves\]
+    sX~i+\m\+i
+    p [\Let's do the \+sX]
+    bY~\mb\?sX
+    t~ sX<\mambo\ [
+        p [ r[sX] ]
+        bY~0
+    ]
+
+    p [bY]
+    p [\a\?sX & r[bY]]
+
+    stimer~\\
+    w~r [\...\?stimer] [
+        p [\cha\]
+        stimer~stimer+\.\
+    ]

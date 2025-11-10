@@ -54,7 +54,19 @@ public interface Stmt {
 
         @Override
         public void compile(Compiler comp) {
-            throw new UnsupportedOperationException("delete this exception and implement this method!"); // TODO
+            String val = child.compile(comp);
+            String addr = comp.nextRegister();
+            
+            if (comp.getStrVar(name) == null) {
+                comp.newStrVar(name, addr);
+                String ptr = comp.nextRegister();
+                comp.dest().format("  %s = alloca ptr\n", addr);
+                comp.dest().format("  %s = getelementptr inbounds [%d x i8], ptr %s, i64 0, i64 0\n", ptr, val.length()+1, val);
+            }
+            else {
+                addr = comp.getStrVar(name);
+            }
+            comp.dest().format("  store ptr %s, ptr %s\n", val, addr);
         }
     }
 
@@ -67,7 +79,17 @@ public interface Stmt {
 
         @Override
         public void compile(Compiler comp) {
-            throw new UnsupportedOperationException("delete this exception and implement this method!"); // TODO
+            String val = child.compile(comp);
+            String res;
+            if (comp.getBoolVar(name) == null) {
+                res = comp.nextRegister();
+                comp.newBoolVar(name, res);
+                comp.dest().format("  %s = alloca i1\n", res);
+            } 
+            else 
+                res = comp.getBoolVar(name);
+
+            comp.dest().format("  store i1 %s, ptr %s\n", val, res);
         }
     }
 
@@ -111,8 +133,35 @@ public interface Stmt {
 
         @Override
         public void compile(Compiler comp) {
-            throw new UnsupportedOperationException("delete this exception and implement this method!"); // TODO
+            String condBlock = comp.nextBlock();
+            String thenBlock = comp.nextBlock();
+            String elseBlock = comp.nextBlock();
+            String mergeBlock = comp.nextBlock();
+
+            comp.dest().format("  br label %%%s\n", condBlock);
+
+            comp.dest().format("%s:\n", condBlock);
+            String condReg = condition.compile(comp);
+            comp.dest().format("  br i1 %s, label %%%s, label %%%s\n", condReg, thenBlock, elseBlock);
+
+            comp.dest().format("%s:\n", thenBlock);
+            ifBody.compile(comp);
+            comp.dest().format("  br label %%%s\n", mergeBlock);
+
+            comp.dest().format("%s:\n", elseBlock);
+            elseBody.compile(comp);
+            comp.dest().format("  br label %%%s\n", mergeBlock);
+
+            comp.dest().format("%s:\n", mergeBlock);
         }
+    }
+
+    public record EmptyStmt() implements Stmt {
+        @Override
+        public void exec(Interpreter interp) {}  
+
+        @Override
+        public void compile(Compiler comp) {}
     }
 
     record While(Expr<Boolean> condition, Stmt body) implements Stmt {
@@ -125,7 +174,21 @@ public interface Stmt {
 
         @Override
         public void compile(Compiler comp) {
-            throw new UnsupportedOperationException("delete this exception and implement this method!"); // TODO
+            String condBlock = comp.nextBlock();
+            String bodyBlock = comp.nextBlock();
+            String exitBlock = comp.nextBlock();
+
+            comp.dest().format("  br label %%%s\n", condBlock);
+
+            comp.dest().format("%s:\n", condBlock);
+            String condReg = condition.compile(comp);
+            comp.dest().format("  br i1 %s, label %%%s, label %%%s\n", condReg, bodyBlock, exitBlock);
+
+            comp.dest().format("%s:\n", bodyBlock);
+            body.compile(comp);
+            comp.dest().format("  br label %%%s\n", condBlock);
+
+            comp.dest().format("%s:\n", exitBlock);
         }
     }
 }

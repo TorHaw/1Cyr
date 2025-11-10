@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.ArrayList;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import java.util.Map;
+import java.util.HashMap;
 
 /** AST-based Compiler.
  * This class holds variables to manage the state of a running compiler.
@@ -20,7 +22,10 @@ public class Compiler {
     // as it goes through the AST.
     private PrintWriter dest;
     private int nextRegNum = 1;
+    private int nextBlockNum = 1;
     private List<String> literals = new ArrayList<>();
+    private Map<String, String> strVars = new HashMap<>();
+    private Map<String, String> boolVars = new HashMap<>();
 
     /** Returns the open writer to the destination .ll file. */
     public PrintWriter dest() { return dest; }
@@ -30,6 +35,26 @@ public class Compiler {
      */
     public String nextRegister() {
         return String.format("%%reg%d", nextRegNum++);
+    }
+
+    public String nextBlock() {
+        return String.format("block%d", nextBlockNum++);
+    }
+
+    public void newStrVar(String name, String reg) {
+        strVars.put(name, reg);
+    }
+
+    public String getStrVar(String name) {
+        return strVars.get(name);
+    }
+
+    public void newBoolVar(String name, String reg) {
+        boolVars.put(name, reg);
+    }
+
+    public String getBoolVar(String name) {
+        return boolVars.get(name);
     }
 
     /** Adds a new string to the list of literals.

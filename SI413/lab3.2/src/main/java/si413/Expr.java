@@ -38,7 +38,10 @@ public interface Expr<T> {
 
         @Override
         public String compile(Compiler comp) {
-            throw new UnsupportedOperationException("delete this exception and implement this method!"); // TODO
+            String ptr = comp.nextRegister();
+            String addr = comp.getStrVar(name);
+            comp.dest().format("  %s = load ptr, ptr %s\n", ptr, addr);
+            return ptr;
         }
     }
 
@@ -118,7 +121,10 @@ public interface Expr<T> {
 
         @Override
         public String compile(Compiler comp) {
-            throw new UnsupportedOperationException("delete this exception and implement this method!"); // TODO
+            String res = comp.nextRegister();
+            String ptr = comp.getBoolVar(name);
+            comp.dest().format("  %s = load i1, ptr %s\n", res, ptr);
+            return res;
         }
     }
 

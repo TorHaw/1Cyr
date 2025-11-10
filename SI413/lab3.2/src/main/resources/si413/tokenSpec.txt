@@ -1,1 +1,19 @@
-# delete this file and replace it with your own token spec!
+TILDE:        ~
+CONCAT:       \+
+COMPARE:      <|>
+COND:         &|\|
+SUBSTR:       \?
+IF:           t
+ELSE:         f
+WHILE:        w
+BOOLLIT:      0|1
+PRINT:        p
+INPUT:        i
+REV:          r
+LB:           \[
+RB:           \]
+STRLIT:       \\([^\\\$]|\$.)*\\
+SID:          s[a-zA-Z]+
+BID:          b[a-zA-Z]+
+ignore:       @.*
+ignore:       [ \n\r\t]+ 
